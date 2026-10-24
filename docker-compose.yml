@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  backend-app:
+    image: book-store:1.0.0
+    restart: always
+    networks:
+      - my_network
+    ports:
+      - "8080:8080"
+    environment:
+      - POSTGRES_NAME=postgres14
+      - POSTGRES_PORT=5432
+    depends_on:
+      - postgres14
+  postgres14:
+    image: postgres:14.5
+    restart: always
+    networks:
+      - my_network
+    ports:
+      - "5432:5432"
+    volumes:
+      - ~/Workspace/docker/data/postgres/v14/:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=book_store
+
+networks:
+  my_network:
+    driver: bridge
